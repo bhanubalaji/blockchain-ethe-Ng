@@ -1,0 +1,42 @@
+<div class="heading">
+
+    <ul nz-menu nzMode="horizontal">
+   
+        <h4>RIJ</h4>
+        <li nz-menu-item nzSelected> dashboard</li>
+        <!-- <li nz-menu-item > staking</li> -->
+        <!-- <li nz-menu-item>
+            <a routerLink=""  rel="noopener noreferrer">Navigation Four - Link</a>
+          </li> -->
+    <button style="margin-top: 10px;" (click)=siew() nz-button nzType="default">walletconnect</button>
+    <button *ngIf="disconnectdisplay" style="margin-top: 10px;" (click)="disconnectWallet()" nz-button nzType="default">Disconnect Wallet</button>
+
+    <!-- <button (click)="disconnectWallet()">Disconnect Wallet</button> -->
+
+
+        </ul>
+
+</div>
+
+<div class="middle">
+
+    <h3>Dashboard</h3>
+ 
+
+    <div class="sub">
+      ADDRESS:  <h3>{{address}}</h3>
+        <!-- <li>{{balance}}</li> -->
+      BALANCE:  <h3>{{balanceInEther}}Matic</h3>
+    </div>
+
+    <button *ngIf="sendmoney" style="margin-top: 10px;" (click)="sendTransaction1()" nz-button nzType="default">send money</button>
+
+
+</div>
+<hr>
+
+<!-- <h4>Sign-In with Ethereum</h4>
+<button type="button"(click)=siew()>Sign-In with Ethereum - walletconnect</button> -->
+<!-- <p class="alert">Result:<span id="siweResult"></span></p> -->
+<hr>
+<button type="button"(click)=displayTokens()>Display Tokens</button>

@@ -2,6 +2,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -29,5 +30,11 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
-}
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    // "/custom.d.ts"
+ "src/custom.d.ts"    // Add other file paths as needed
+  ]
+} 
