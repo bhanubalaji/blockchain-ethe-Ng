@@ -1,6 +1,9 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, Inject } from '@angular/core';
 import Web3 from 'web3';
-import { sendTransaction } from 'web3/lib/commonjs/eth.exports';
+import { DOCUMENT } from '@angular/common';
+declare let window: any;
+
+
 
 
 @Component({
@@ -12,18 +15,33 @@ export class HomeComponent implements OnInit {
   isCollapsed = false;
   web3!: Web3;
 address:any=''
+toaddress:any=''
+
 balance:any
 balanceInEther:any
 sendmoney:boolean=false
 disconnectdisplay:boolean=false
 
-  constructor() { this.initWeb3(); }
+public elem: any;
+public fullScreen = false;
+public userData:any;
+public visible: boolean = false;
+ public inputDisplay:boolean=false
+
+  constructor(@Inject(DOCUMENT) private document: any) { this.initWeb3(); }
   ngOnInit(): void {
-    setInterval(this.accountchange, 1000)
+console.log('okk')
+        /**
+   * Get the online/offline status from browser window
+   */
+        this.elem = document.documentElement;
+        // this.fullScreenToolTip = 'Enable Full Screen Mode';
   }
 
 
-
+  sendTransDis(){
+    this.inputDisplay=true
+  }
 
 
 
@@ -74,6 +92,7 @@ this.address=address
        console.log(window.ethereum.isConnected()) 
 this.sendmoney=true
 this.disconnectdisplay=true
+setInterval(this.accountchange, 1000)
 
       })
       .catch(error => {
@@ -97,18 +116,19 @@ this.disconnectdisplay=true
   params= [
     {
       from:'',
-      to: '0x6E54891dfd02995D4A70f3a7cAb0D9bC535DEE2C',
+      to: '',
       // gas: '0x76c0', // 30400
       // gasPrice: '0x9184e72a000', // 10000000000000
       value: '0x174876E800',
-      data:
-        '',
+      data:'',
     },
   ];
 
   sendTransaction1(){
 
     this.params[0].from=this.address
+    this.params[0].to=this.toaddress
+
 window.ethereum
   .request({
     method: 'eth_sendTransaction',
@@ -288,15 +308,29 @@ this.disconnectdisplay=true
   }
 };
 
-async siew(){
-  const domain = window.location.host;
-  const accounts = await this.web3.eth.requestAccounts();
-  console.log(accounts)
 
-  const from = accounts[0];
-  this.address=accounts[0]
-  const siweMessage = ` ${domain} wants you to sign in with your Ethereum account:\n${from}\n\nI accept the MetaMask Terms of Service: https://community.metamask.io/tos\n\nURI: https://${domain}\nVersion: 1\nChain ID: 1\nNonce: 32891757\nIssued At: 2021-09-30T16:25:24.000Z`;
-  this.siweSign(siweMessage);
+
+async siew(){
+  try{
+    const domain = window.location.host;
+    const accounts = await this.web3.eth.requestAccounts();
+    console.log(accounts)
+  
+    const from = accounts[0];
+    this.address=accounts[0]
+    const siweMessage = ` ${domain} wants you to sign in with your Ethereum account:\n${from}\n\nI accept the MetaMask Terms of Service: https://community.metamask.io/tos\n\nURI: https://${domain}\nVersion: 1\nChain ID: 1\nNonce: 32891757\nIssued At: 2021-09-30T16:25:24.000Z`;
+    this.siweSign(siweMessage);
+  }catch(err){
+    console.log(err)
+    await    window.ethereum.request({
+      method: 'wallet_requestPermissions',
+      params: [{
+        eth_accounts: {}
+      }],
+    
+    })
+  }
+ 
 }
 
 
@@ -333,4 +367,97 @@ try {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  open(): void { this.visible = true; };
+
+  close(): void { this.visible = false; };
+
+
+
+  
+
+
+  //new line lock
+  toggleFullscreen() {
+
+
+    if (window.fullScreen) {
+
+      this.closeFullscreen();
+    } else {
+
+      this.openFullscreen();
+    }
+  }
+  openFullscreen() {
+
+    if (this.elem.requestFullscreen) {
+      // this.fullScreenToolTip = 'Disable Full Screen Mode';
+
+      this.elem.requestFullscreen();
+      this.fullScreen = true;
+    } else if (this.elem.mozRequestFullScreen) {
+      /* Firefox */
+      this.elem.mozRequestFullScreen();
+      this.fullScreen = true;
+    } else if (this.elem.webkitRequestFullscreen) {
+      /* Chrome, Safari and Opera */
+      this.elem.webkitRequestFullscreen();
+      this.fullScreen = true;
+    } else if (this.elem.msRequestFullscreen) {
+      /* IE/Edge */
+      this.elem.msRequestFullscreen();
+      this.fullScreen = true;
+    }
+
+  }
+
+  // fullScreenToolTip:string
+  /* Close fullscreen */
+  closeFullscreen() {
+    // this.fullScreenToolTip = 'Enable Full Screen Mode';
+
+    if (!document.exitFullscreen) {
+      this.document.exitFullscreen();
+      this.fullScreen = false;
+    } else if (this.document.mozCancelFullScreen) {
+      /* Firefox */
+      this.document.mozCancelFullScreen();
+      this.fullScreen = false;
+    } else if (this.document.webkitExitFullscreen) {
+      /* Chrome, Safari and Opera */
+      this.document.webkitExitFullscreen();
+      this.fullScreen = false;
+    } else if (this.document.msExitFullscreen) {
+      /* IE/Edge */
+      this.document.msExitFullscreen();
+      this.fullScreen = false;
+    }
+  }
+
 }
+
+
+
+
+
+
+

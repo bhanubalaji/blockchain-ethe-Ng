@@ -29,7 +29,8 @@
       BALANCE:  <h3>{{balanceInEther}}Matic</h3>
     </div>
 
-    <button *ngIf="sendmoney" style="margin-top: 10px;" (click)="sendTransaction1()" nz-button nzType="default">send money</button>
+
+   
 
 
 </div>
@@ -40,3 +41,22 @@
 <!-- <p class="alert">Result:<span id="siweResult"></span></p> -->
 <hr>
 <button type="button"(click)=displayTokens()>Display Tokens</button>
+
+<hr><hr>
+
+
+<div class="header__icons">
+  <img src="" width="24" (click)="toggleFullscreen()" alt="full screeen button">
+</div>
+
+<hr><hr>
+<button *ngIf="sendmoney" style="margin-top: 10px;" (click)="sendTransDis()" nz-button nzType="default">send money</button>
+
+<div class="input" *ngIf="inputDisplay">
+  <input nz-input placeholder="Basic usage" [(ngModel)]="address" [placeholder]="address" type="text" />
+  <input nz-input placeholder="Basic usage" [(ngModel)]="toaddress" type="text" />
+  <button nz-button nzType="primary" (click)="sendTransaction1()" >transfer</button>
+</div>
+
+<br />
+<br />
